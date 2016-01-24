@@ -11,7 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * PHP version 5
  *
  * @category  Microsoft
@@ -22,11 +22,12 @@
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 namespace Tests\Unit\WindowsAzure\ServiceRuntime\Internal;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
 use Tests\Framework\TestResources;
 use WindowsAzure\ServiceRuntime\Internal\FileInputChannel;
 use WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer;
-
-require_once 'vfsStream/vfsStream.php';
 
 /**
  * Unit tests for class XmlRoleEnvironmentDataDeserializer.
@@ -49,9 +50,9 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
-                
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
+
         $fileName = 'roleenvironmentendpoint';
         $fileContent = '<?xml version="1.0" encoding="utf-8"?>' .
             '<RoleEnvironment xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
@@ -68,23 +69,23 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</CurrentInstance>' .
             '<Roles />' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         // Test
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
@@ -96,8 +97,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test no settings
         $fileName = 'roleenvironmentendpoint';
@@ -109,26 +110,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '<ConfigurationSettings />' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateConfigurationSettings
      */
@@ -136,8 +137,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test one setting
         $fileName = 'roleenvironmentendpoint';
@@ -151,26 +152,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</ConfigurationSettings>' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateConfigurationSettings
      */
@@ -178,8 +179,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test multiple settings
         $fileName = 'roleenvironmentendpoint';
@@ -194,26 +195,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</ConfigurationSettings>' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateLocalResources
      */
@@ -221,8 +222,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test no settings
         $fileName = 'roleenvironmentendpoint';
@@ -234,26 +235,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '<LocalResources />' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateLocalResources
      */
@@ -261,8 +262,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test one setting
         $fileName = 'roleenvironmentendpoint';
@@ -276,26 +277,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</LocalResources>' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateLocalResources
      */
@@ -303,8 +304,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test multiple settings
         $fileName = 'roleenvironmentendpoint';
@@ -319,26 +320,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</LocalResources>' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateCurrentInstance
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateRoleInstanceEndpoints
@@ -347,8 +348,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test multiple settings
         $fileName = 'roleenvironmentendpoint';
@@ -362,26 +363,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</Endpoints>' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateCurrentInstance
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateRoleInstanceEndpoints
@@ -390,8 +391,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test multiple settings
         $fileName = 'roleenvironmentendpoint';
@@ -406,26 +407,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</Endpoints>' .
             '</CurrentInstance>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateRoles
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateRoleInstances
@@ -434,8 +435,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test multiple settings
         $fileName = 'roleenvironmentendpoint';
@@ -472,26 +473,26 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</Role>' .
             '</Roles>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateRoles
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlRoleEnvironmentDataDeserializer::_translateRoleInstances
@@ -500,8 +501,8 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
 
         // Test multiple settings
         $fileName = 'roleenvironmentendpoint';
@@ -523,23 +524,23 @@ class XmlRoleEnvironmentDataDeserializerTest extends \PHPUnit_Framework_TestCase
             '</Role>' .
             '</Roles>' .
             '</RoleEnvironment>';
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
 
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $xmlRoleEnvironmentDataDeserializer = new XmlRoleEnvironmentDataDeserializer();
-        
+
         $inputChannel = new FileInputChannel();
         $inputStream = $inputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $roleEnvironmentData = $xmlRoleEnvironmentDataDeserializer->deserialize(
             $inputStream
         );
-        
+
         $this->assertNotEquals(null, $roleEnvironmentData);
     }
 }

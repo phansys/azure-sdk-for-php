@@ -11,7 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * PHP version 5
  *
  * @category  Microsoft
@@ -22,6 +22,9 @@
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 namespace Tests\Unit\WindowsAzure\ServiceRuntime\Internal;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
 use Tests\Framework\TestResources;
 use WindowsAzure\ServiceRuntime\Internal\AcquireCurrentState;
 use WindowsAzure\ServiceRuntime\Internal\CurrentStatus;
@@ -29,8 +32,6 @@ use WindowsAzure\ServiceRuntime\Internal\FileInputChannel;
 use WindowsAzure\ServiceRuntime\Internal\FileOutputChannel;
 use WindowsAzure\ServiceRuntime\Internal\ReleaseCurrentState;
 use WindowsAzure\ServiceRuntime\Internal\XmlCurrentStateSerializer;
-
-require_once 'vfsStream/vfsStream.php';
 
 /**
  * Unit tests for class XmlCurrentStateSerializer.
@@ -63,40 +64,40 @@ class XmlCurrentStateSerializerTest extends \PHPUnit_Framework_TestCase
             '</Acquire>' .
             '</StatusLease>' .
             '</CurrentState>';
-        
+
         // Setup
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
-        
-        $file = \vfsStream::newFile($fileName);
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
+
+        $file = vfsStream::newFile($fileName);
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         // Test
         $fileOutputChannel = new FileOutputChannel();
         $outputStream = $fileOutputChannel->getOutputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $recycleState = new AcquireCurrentState(
             'clientId',
             1,
             CurrentStatus::RECYCLE,
             new \DateTime('2000-01-01', new \DateTimeZone('UTC'))
         );
-        
+
         $xmlCurrentStateSerializer = new XmlCurrentStateSerializer();
         $xmlCurrentStateSerializer->serialize($recycleState, $outputStream);
         fclose($outputStream);
-        
+
         $fileInputChannel = new FileInputChannel();
         $fileInputStream = $fileInputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $inputChannelContents = stream_get_contents($fileInputStream);
         $this->assertEquals($fileContents, $inputChannelContents);
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\XmlCurrentStateSerializer::serialize
      */
@@ -111,30 +112,30 @@ class XmlCurrentStateSerializerTest extends \PHPUnit_Framework_TestCase
             '<Release/>' .
             '</StatusLease>' .
             '</CurrentState>';
-        
+
         // Setup
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
-        
-        $file = \vfsStream::newFile($fileName);
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
+
+        $file = vfsStream::newFile($fileName);
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         // Test
         $fileOutputChannel = new FileOutputChannel();
         $outputStream = $fileOutputChannel->getOutputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $recycleState = new ReleaseCurrentState('clientId');
         $xmlCurrentStateSerializer = new XmlCurrentStateSerializer();
         $xmlCurrentStateSerializer->serialize($recycleState, $outputStream);
         fclose($outputStream);
-        
+
         $fileInputChannel = new FileInputChannel();
         $fileInputStream = $fileInputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $inputChannelContents = stream_get_contents($fileInputStream);
         $this->assertEquals($fileContents, $inputChannelContents);
     }

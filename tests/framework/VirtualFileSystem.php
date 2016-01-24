@@ -11,7 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * PHP version 5
  *
  * @category  Microsoft
@@ -21,9 +21,12 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0  Apache License 2.0
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
- 
+
 namespace Tests\Framework;
-require_once 'vfsStream/vfsStream.php';
+
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
 
 /**
  * Represents virtual file system for testing purpose.
@@ -43,15 +46,15 @@ class VirtualFileSystem
         $root = is_null($root) ? 'root' : $root;
         $fileName = is_null($fileName) ? 'test.txt' : $fileName;
 
-        \vfsStreamWrapper::register();
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($root));
-        
-        $file = \vfsStream::newFile($fileName);
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($root));
+
+        $file = vfsStream::newFile($fileName);
         $file->setContent($contents);
-        
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        $virtualPath = \vfsStream::url($root . '/' . $fileName);
-        
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+        $virtualPath = vfsStream::url($root . '/' . $fileName);
+
         return $virtualPath;
     }
 }

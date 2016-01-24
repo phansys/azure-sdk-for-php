@@ -11,7 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * PHP version 5
  *
  * @category  Microsoft
@@ -22,11 +22,12 @@
  * @link      https://github.com/windowsazure/azure-sdk-for-php
  */
 namespace Tests\Unit\WindowsAzure\ServiceRuntime\Internal;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
+use org\bovigo\vfs\vfsStreamWrapper;
 use Tests\Framework\TestResources;
 use WindowsAzure\ServiceRuntime\Internal\ChunkedGoalStateDeserializer;
 use WindowsAzure\ServiceRuntime\Internal\FileInputChannel;
-
-require_once 'vfsStream/vfsStream.php';
 
 /**
  * Unit tests for class ChunkedGoalStateDeserializer.
@@ -51,14 +52,14 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
-        
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
+
         $roleEnvironmentPath = 'mypath';
         $currentStateEndpoint = 'endpoint';
         $incarnation = 1;
         $expectedState = 'started';
-        
+
         $fileName = 'file';
         $fileContent = '<?xml version="1.0" encoding="utf-8"?>' .
             '<GoalState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
@@ -77,23 +78,23 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
             '</CurrentStateEndpoint>' .
             '<Deadline>9999-12-31T23:59:59.9999999</Deadline>' .
             '</GoalState>';
-        
+
         $fileContent = dechex(strlen($fileContent)) . "\n" . $fileContent;
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
-        
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $fileInputChannel = new FileInputChannel();
         $fileInputStream = $fileInputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $chunkedGoalStateDeserializer = new ChunkedGoalStateDeserializer();
         $chunkedGoalStateDeserializer->initialize($fileInputStream);
         $goalState = $chunkedGoalStateDeserializer->deserialize();
-        
+
         // Test
         $this->assertNotEquals(null, $goalState);
         $this->assertEquals($roleEnvironmentPath, $goalState->getEnvironmentPath());
@@ -102,7 +103,7 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($incarnation, $goalState->getIncarnation());
         $this->assertEquals($expectedState, $goalState->getExpectedState());
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\ChunkedGoalStateDeserializer::__construct
      * @covers WindowsAzure\ServiceRuntime\Internal\ChunkedGoalStateDeserializer::initialize
@@ -113,14 +114,14 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
-        
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
+
         $roleEnvironmentPath = 'mypath';
         $currentStateEndpoint = 'endpoint';
         $incarnation = 1;
         $expectedState = 'started';
-        
+
         $fileName = 'file';
         $fileContent = '<?xml version="1.0" encoding="utf-8"?>' .
             '<GoalState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
@@ -139,23 +140,23 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
             '</CurrentStateEndpoint>' .
             '<Deadline>9999-12-31T23:59:59.9999999</Deadline>' .
             '</GoalState>';
-        
+
         $fileContent = dechex(strlen($fileContent)) . "\n" . $fileContent . "\n";
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
-        
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $fileInputChannel = new FileInputChannel();
         $fileInputStream = $fileInputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $chunkedGoalStateDeserializer = new ChunkedGoalStateDeserializer();
         $chunkedGoalStateDeserializer->initialize($fileInputStream);
         $goalState = $chunkedGoalStateDeserializer->deserialize();
-        
+
         // Test
         $this->assertNotEquals(null, $goalState);
         $this->assertEquals($roleEnvironmentPath, $goalState->getEnvironmentPath());
@@ -164,7 +165,7 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($incarnation, $goalState->getIncarnation());
         $this->assertEquals($expectedState, $goalState->getExpectedState());
     }
-    
+
     /**
      * @covers WindowsAzure\ServiceRuntime\Internal\ChunkedGoalStateDeserializer::__construct
      * @covers WindowsAzure\ServiceRuntime\Internal\ChunkedGoalStateDeserializer::initialize
@@ -175,14 +176,14 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
         // Setup
         $rootDirectory = 'root';
 
-        \vfsStreamWrapper::register(); 
-        \vfsStreamWrapper::setRoot(new \vfsStreamDirectory($rootDirectory));
-        
+        vfsStreamWrapper::register();
+        vfsStreamWrapper::setRoot(new vfsStreamDirectory($rootDirectory));
+
         $roleEnvironmentPath = 'mypath';
         $currentStateEndpoint = 'endpoint';
         $incarnation = 1;
         $expectedState = 'started';
-        
+
         $fileName = 'file';
         $fileContent = '<?xml version="1.0" encoding="utf-8"?>' .
             '<GoalState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
@@ -201,23 +202,23 @@ class ChunkedGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
             '</CurrentStateEndpoint>' .
             '<Deadline>9999-12-31T23:59:59.9999999</Deadline>' .
             '</GoalState>';
-        
+
         $fileContent = "\n" . dechex(strlen($fileContent)) . "\n" . $fileContent;
-        
-        $file = \vfsStream::newFile($fileName);
-        $file->setContent($fileContent); 
-        
-        \vfsStreamWrapper::getRoot()->addChild($file);
-        
+
+        $file = vfsStream::newFile($fileName);
+        $file->setContent($fileContent);
+
+        vfsStreamWrapper::getRoot()->addChild($file);
+
         $fileInputChannel = new FileInputChannel();
         $fileInputStream = $fileInputChannel->getInputStream(
-            \vfsStream::url($rootDirectory . '/' . $fileName)
+            vfsStream::url($rootDirectory . '/' . $fileName)
         );
-        
+
         $chunkedGoalStateDeserializer = new ChunkedGoalStateDeserializer();
         $chunkedGoalStateDeserializer->initialize($fileInputStream);
         $goalState = $chunkedGoalStateDeserializer->deserialize();
-        
+
         // Test
         $this->assertNotEquals(null, $goalState);
         $this->assertEquals($roleEnvironmentPath, $goalState->getEnvironmentPath());

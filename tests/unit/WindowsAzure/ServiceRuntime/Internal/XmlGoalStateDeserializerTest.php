@@ -11,7 +11,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * PHP version 5
  *
  * @category  Microsoft
@@ -25,8 +25,6 @@ namespace Tests\Unit\WindowsAzure\ServiceRuntime\Internal;
 use Tests\Framework\TestResources;
 use WindowsAzure\ServiceRuntime\Internal\GoalState;
 use WindowsAzure\ServiceRuntime\Internal\XmlGoalStateDeserializer;
-
-require_once 'vfsStream/vfsStream.php';
 
 /**
  * Unit tests for class XmlGoalStateDeserializer.
@@ -51,28 +49,28 @@ class XmlGoalStateDeserializerTest extends \PHPUnit_Framework_TestCase
         $currentStateEndpoint = 'endpoint';
         $incarnation = 1;
         $expectedState = 'started';
-        
+
         $xmlGoalStateDeserializer = new XmlGoalStateDeserializer();
         $goalState = $xmlGoalStateDeserializer->deserialize(
             '<?xml version="1.0" encoding="utf-8"?>' .
             '<GoalState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' .
             'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' .
             '<Incarnation>' .
-            $incarnation .   
+            $incarnation .
             '</Incarnation>' .
             '<ExpectedState>' .
             $expectedState .
             '</ExpectedState>' .
-            '<RoleEnvironmentPath>' . 
+            '<RoleEnvironmentPath>' .
             $roleEnvironmentPath .
             '</RoleEnvironmentPath>' .
             '<CurrentStateEndpoint>' .
             $currentStateEndpoint .
             '</CurrentStateEndpoint>' .
             '<Deadline>9999-12-31T23:59:59.9999999</Deadline>' .
-            '</GoalState>'        
+            '</GoalState>'
         );
-        
+
         // Test
         $this->assertNotEquals(null, $goalState);
         $this->assertEquals($roleEnvironmentPath, $goalState->getEnvironmentPath());
