@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "pear/http_request2": "^2.2",
+        "pear/http_request2": "^2.2@dev",
         "pear/net_url2": "<2.2",
         "pear/mail_mime": "^1.10",
         "pear/mail_mime-decode": "^1.5",

@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3f569834cf618bf39ddb52bf8534ed6a",
-    "content-hash": "73dd640f16bee365c7f573212e9d5db4",
+    "hash": "c4d5b7a192465239369a2ce7e7550d4d",
+    "content-hash": "2fbfe73e47c8dd3df6205923f97f8ede",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -99,16 +99,16 @@
         },
         {
             "name": "pear/http_request2",
-            "version": "v2.2.0",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pear/HTTP_Request2.git",
-                "reference": "4b8c5014a16336bdca1e2ee633a462fbf954ec95"
+                "reference": "d6c81670c504045248c1afdf896bb9a3288158de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pear/HTTP_Request2/zipball/4b8c5014a16336bdca1e2ee633a462fbf954ec95",
-                "reference": "4b8c5014a16336bdca1e2ee633a462fbf954ec95",
+                "url": "https://api.github.com/repos/pear/HTTP_Request2/zipball/d6c81670c504045248c1afdf896bb9a3288158de",
+                "reference": "d6c81670c504045248c1afdf896bb9a3288158de",
                 "shasum": ""
             },
             "require": {
@@ -130,7 +130,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD-2-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -140,12 +140,14 @@
                 }
             ],
             "description": "Provides an easy way to perform HTTP requests.",
-            "homepage": "https://github.com/pear/HTTP_Request2",
+            "homepage": "http://pear.php.net/package/HTTP_Request2",
             "keywords": [
+                "PEAR",
+                "curl",
                 "http",
                 "request"
             ],
-            "time": "2014-01-12 20:09:49"
+            "time": "2014-01-16 17:27:21"
         },
         {
             "name": "pear/mail_mime",
@@ -400,22 +402,27 @@
     "packages-dev": [
         {
             "name": "dflydev/markdown",
-            "version": "v1.0.0",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-markdown.git",
-                "reference": "76501a808522dbe40a5a71d272bd08d54cbae03d"
+                "reference": "6baed9b50f29c980795b6656d43722aadb126f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/76501a808522dbe40a5a71d272bd08d54cbae03d",
-                "reference": "76501a808522dbe40a5a71d272bd08d54cbae03d",
+                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/6baed9b50f29c980795b6656d43722aadb126f7e",
+                "reference": "6baed9b50f29c980795b6656d43722aadb126f7e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "dflydev\\markdown": "src"
@@ -423,7 +430,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "New BSD License"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -451,7 +458,7 @@
                 "markdown"
             ],
             "abandoned": "michelf/php-markdown",
-            "time": "2012-01-02 23:11:32"
+            "time": "2013-09-23 12:00:18"
         },
         {
             "name": "doctrine/instantiator",
@@ -1452,9 +1459,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "pear/http_request2": 20
+    },
     "prefer-stable": false,
-    "prefer-lowest": true,
+    "prefer-lowest": false,
     "platform": [],
     "platform-dev": []
 }
